@@ -18,6 +18,7 @@ def set_console_variables():
     parser.add_argument('-prompt', help="The prommpt to use for model summarization")
     parser.add_argument('-apiKey', help="Insert your API Key here if you prefer to pass as a console var")
     parser.add_argument('-query', help="Insert a search query for arxiv results")
+    parser.add_argument('-model', help="Gemini model name - defaults to gemini-1.5-flash")
 
 # Try and use an environment prompt variable
 # If a console variable is set, override environment variable with console var
@@ -41,7 +42,7 @@ def set_var(env_var_name, console_var, default_val, dtype=None):
 
     return var
 
-def generate_summary(client, doc_url, prompt):
+def generate_summary(client, model, doc_url, prompt):
         # Retrieve and encode the PDF byte
         doc_data = httpx.get(doc_url).content
 
@@ -65,6 +66,7 @@ def main():
     PROMPT = set_var("PROMPT", args.prompt, "Create a short summary for this document. Focus on what the authors did, why, and the results.")
     API_KEY = set_var("API_KEY", args.apiKey, DEFAULT_API_KEY)
     SEARCH_QUERY = set_var("QUERY", args.query, "Large Language Models")
+    MODEL = set_var("MODEL", args.model, "gemini-1.5-flash")
 
     if API_KEY == None:
         print("Please specify an API Key via the environment variable API_KEY or console -apiKey")
@@ -79,7 +81,7 @@ def main():
 
     with open("result.txt", "w") as result_file:
         for result in arxiv.Client().results(search):
-            summary = generate_summary(client, result.pdf_url, PROMPT)
+            summary = generate_summary(client, MODEL, result.pdf_url, PROMPT)
 
             result_file.write(f"arXiv URL: {result.pdf_url}\nSummary: {summary}\n\n")
             print(f"Summary for {result.pdf_url}:\n{summary}\n")
