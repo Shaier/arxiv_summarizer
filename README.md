@@ -109,7 +109,7 @@ python arxiv_summarize.py
 ### Summarize an Entire Paper by Search Query Terms
 Sumamrize your specified number of arxiv papers by search query. This summarizes the entire paper pdf rather than just the abstract:
 ```bash
-python arxiv_suuarizer_by_search_results.py -numSummaries 5 -prompt "Summarize this document in 3 sentences." -apiKey "YOUR_API_KEY" -query "Large Language Models"
+python arxiv_suuarize_by_search_results.py -numSummaries 5 -prompt "Summarize this document in 3 sentences." -apiKey "YOUR_API_KEY" -query "Large Language Models"
 ```
 
 You can also set environemnt variables rather than console variables if you don't want to enter variables every script call.
