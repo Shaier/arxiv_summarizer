@@ -16,7 +16,17 @@ function fetchAndWritePapers() {
 
     var paperCount = 1; // Correctly track numbering for papers
 
+    var todaysDate = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+
     for (var i = 0; i < items.length; i++) {
+
+      // skip papers that are not from today
+      var pubDate = items[i].getChildText("pubDate");
+      var formattedPubDate = Utilities.formatDate(new Date(pubDate), Session.getScriptTimeZone(), "yyyy-MM-dd");
+      if (formattedPubDate !== todaysDate) {
+        continue;
+      }
+
       var title = items[i].getChildText("title").toLowerCase();
       var link = items[i].getChildText("link");
       var description = items[i].getChildText("description"); // Abstract
